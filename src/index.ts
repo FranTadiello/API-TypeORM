@@ -19,11 +19,23 @@ async function DeletarUsuario() {
 
   const userRepositorio = AppDataSource.getRepository(User);
   const resultado = await userRepositorio.delete(id);
+  //console.log("Resultado da exclusão", resultado);
 
   if (resultado.affected) {
     console.log("Usuário deletado com sucesso!");
   } else {
     console.log("Usuário não encontrado.");
+  }
+}
+
+async function listarUsuarios() {
+  const lista = await AppDataSource.getRepository(User).find();
+
+  console.log("\nUsuários cadastrados:");
+  if (lista.length === 0) {
+    console.log("Nenhum usuário encontrado.");
+  } else {
+    console.table(lista);
   }
 }
 
@@ -49,7 +61,7 @@ AppDataSource.initialize().then(async () => {
                 await DeletarUsuario();
                 break;
             case '3':
-                //await listarUsuarios();
+                await listarUsuarios();
                 break;
             case '4':
                // await atualizarUsuarios();
