@@ -1,7 +1,59 @@
 import "reflect-metadata"; //para entender os dacorators
 import { AppDataSource } from "./data-source"; //cria a conexão com o banco de dados conforme configuração
 import { User } from "./entity/User";
+import * as readlineSync from 'readline-sync'; 
 
+async function criarUsuario() {
+  const nome = readlineSync.question("Digite o nome do usuário: ");
+  const email = readlineSync.questionEMail("Digite o email do usuário: ");
+
+  const userRepositorio = AppDataSource.getRepository(User);
+  const novoUser = userRepositorio.create({ nome, email });
+  await userRepositorio.save(novoUser);
+
+  console.log("Usuário criado com sucesso!");
+}
+
+AppDataSource.initialize().then(async () => {
+    console.log("Conectado ao banco de dados!\n");
+
+   let exit = false;
+    while (!exit) {
+        console.log("\nO que deseja fazer?");
+        console.log("1. Adicionar Usuário");
+        console.log("2. Deletar Usuário");
+        console.log("3. Listar Usuários");
+        console.log("4. Atualizar email de usuário");
+        console.log("5. Sair");
+
+        const choice = readlineSync.question("\nEscolha uma opcão: ");
+
+        switch (choice) {
+            case '1':
+                await criarUsuario();
+                break;
+            case '2':
+                //await DeletarUsuario();
+                break;
+            case '3':
+                //await listarUsuarios();
+                break;
+            case '4':
+               // await atualizarUsuarios();
+                break;
+            case '5':
+                exit = true;
+                console.log("Saindo...");
+                break;
+            default:
+                console.log("Opção inválida. Tente novamente.");
+        }
+    }
+}).catch(error => console.log(error));
+
+
+
+/*
 AppDataSource.initialize().then(async () => {
     const userRepositorio = AppDataSource.getRepository(User);
     
@@ -27,4 +79,4 @@ AppDataSource.initialize().then(async () => {
     //Deletar usuário
     await userRepositorio.delete({ nome: "Fabrício"});
     console.log("usuário deletado!");
-})
+}) */
