@@ -14,6 +14,19 @@ async function criarUsuario() {
   console.log("Usuário criado com sucesso!");
 }
 
+async function DeletarUsuario() {
+  const id = readlineSync.questionInt("Digite o ID do usuário que deseja deletar: ");
+
+  const userRepositorio = AppDataSource.getRepository(User);
+  const resultado = await userRepositorio.delete(id);
+
+  if (resultado.affected) {
+    console.log("Usuário deletado com sucesso!");
+  } else {
+    console.log("Usuário não encontrado.");
+  }
+}
+
 AppDataSource.initialize().then(async () => {
     console.log("Conectado ao banco de dados!\n");
 
@@ -33,7 +46,7 @@ AppDataSource.initialize().then(async () => {
                 await criarUsuario();
                 break;
             case '2':
-                //await DeletarUsuario();
+                await DeletarUsuario();
                 break;
             case '3':
                 //await listarUsuarios();
