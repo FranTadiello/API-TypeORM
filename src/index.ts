@@ -15,4 +15,16 @@ createConnection().then(async (conectar) => {
     //lista todos usuarios
     const listaUsers = await userRepositorio.find(); 
     console.log(listaUsers);
+
+    // Atualizar email do usuario
+    const user = await userRepositorio.findOneBy({ nome: "Fabrício"});
+    if (user) {
+        user.email = "fabricio.novo@email.com";
+        await userRepositorio.save(user);
+        console.log("Usuário atualizado", user);
+    }
+
+    //Deletar usuário
+    await userRepositorio.delete({ nome: "Fabrício"});
+    console.log("usuário deletado!");
 })
