@@ -6,9 +6,10 @@ import * as readlineSync from 'readline-sync';
 async function criarUsuario() {
   const nome = readlineSync.question("Digite o nome do usuário: ");
   const email = readlineSync.questionEMail("Digite o email do usuário: ");
+  const idade = readlineSync.questionInt("Digite a idade: ");
 
   const userRepositorio = AppDataSource.getRepository(User);
-  const novoUser = userRepositorio.create({ nome, email });
+  const novoUser = userRepositorio.create({ nome, email, idade });
   await userRepositorio.save(novoUser);
 
   console.log("Usuário criado com sucesso!");

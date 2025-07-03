@@ -10,5 +10,8 @@ export class User {
 
     @Column()
     email!: string;
+
+    @Column({ nullable: true })
+    idade?: number;
 }
 
