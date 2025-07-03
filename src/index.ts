@@ -39,6 +39,24 @@ async function listarUsuarios() {
   }
 }
 
+async function atualizarUsuarios() {
+  const id = readlineSync.questionInt("Digite o ID do usuário a ser atualizado: ");
+  const novoEmail = readlineSync.questionEMail("Digite o novo email: ");
+
+  const userRepositorio = AppDataSource.getRepository(User);
+  const usuario = await userRepositorio.findOneBy({ id });
+
+  if (!usuario) {
+    console.log("Usuário não encontrado.");
+    return;
+  }
+
+  usuario.email = novoEmail;
+  await userRepositorio.save(usuario);
+
+  console.log("Usuário atualizado com sucesso!");
+}
+
 AppDataSource.initialize().then(async () => {
     console.log("Conectado ao banco de dados!\n");
 
@@ -64,7 +82,7 @@ AppDataSource.initialize().then(async () => {
                 await listarUsuarios();
                 break;
             case '4':
-               // await atualizarUsuarios();
+                await atualizarUsuarios();
                 break;
             case '5':
                 exit = true;
