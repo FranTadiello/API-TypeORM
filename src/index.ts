@@ -1,9 +1,9 @@
 import "reflect-metadata"; //para entender os dacorators
+import { AppDataSource } from "./data-source"; //cria a conexão com o banco de dados conforme configuração
 import { User } from "./entity/User";
-import { createConnection } from "typeorm"; //lê o arquivo ormconfig.json e cria a conexão com o banco de dados
 
-createConnection().then(async (conectar) => {
-    const userRepositorio = conectar.getRepository(User);
+AppDataSource.initialize().then(async () => {
+    const userRepositorio = AppDataSource.getRepository(User);
     
     //adiciona novo usuario
     const novoUser = userRepositorio.create({
